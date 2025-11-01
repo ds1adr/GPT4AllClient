@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct ChatView: View {
+    @State var viewModel: ChatViewModel
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -16,9 +18,12 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
+        .task {
+            viewModel.getModels()
+        }
     }
 }
 
 #Preview {
-    ContentView()
+    ChatView(viewModel: ChatViewModel())
 }

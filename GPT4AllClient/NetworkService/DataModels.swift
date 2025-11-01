@@ -92,7 +92,12 @@ struct Message: Codable {
     let content: String
 }
 
-struct Choice: Codable {
+struct Choice: Codable, Identifiable {
+    // TODO: Need to check index can be identifiable
+    var id: Int {
+        index
+    }
+    
     let finishReason: String
     let index: Int
     let message: Message
@@ -132,5 +137,11 @@ struct ChatRequest: Encodable {
         case maxTokens = "max_tokens"
         case temperature
         
+    }
+    
+    init(model: String, chatMessage: String) {
+        self.model = model
+        let message = Message(role: "user", content: chatMessage)
+        self.messages = [message]
     }
 }
