@@ -123,8 +123,8 @@ struct ChatResponse: Codable {
 struct ChatRequest: Encodable {
     let model: String
     let messages: [Message]
-    let maxTokens: Int
-    let temperature: Float
+    let maxTokens: Int = 50
+    let temperature: Float = 0.28
     
     enum CodingKeys: String, CodingKey {
         case model

@@ -43,7 +43,6 @@ extension NetworkRouter {
         }
         
         guard let url = urlComponents.url else {
-//        guard let url = URL(string: "http://localhost:4891/v1/chat/completions") else {
             return nil
         }
         
@@ -51,7 +50,7 @@ extension NetworkRouter {
         
         request.httpMethod = method.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+/*
         let msg = """
 {
         "model": "Llama 3 8B Instruct",
@@ -60,9 +59,10 @@ extension NetworkRouter {
         "temperature": 0.28
     }
 """
-//        if let body {
-        request.httpBody = msg.data(using: .utf8)
-//        }
+ */
+        if let body {
+            request.httpBody = body.data(using: .utf8)
+        }
         return request
     }
 }
