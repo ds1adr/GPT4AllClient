@@ -24,40 +24,7 @@ struct ChatView: View {
                     if !viewModel.choices.isEmpty {
                         List(viewModel.choices) { choice in
                             HStack {
-                                let isUser = choice.message.role == "user"
-                                if isUser {
-                                    Spacer()
-                                }
-                                Text(choice.message.content)
-                                    .id(choice.id)
-                                    .containerRelativeFrame(.horizontal) { length, _ in
-                                        length * 0.7
-                                    }
-                                    .padding()
-                                    .background(
-                                        isUser ?
-                                        Image("chat_bg_right").resizable(
-                                            capInsets: EdgeInsets(
-                                                top: Constants.doubleSpace,
-                                                leading: Constants.doubleSpace,
-                                                bottom: Constants.doubleSpace,
-                                                trailing: Constants.doubleSpace
-                                            ),
-                                            resizingMode: .stretch
-                                        ) :
-                                        Image("chat_bg_left").resizable(
-                                            capInsets: EdgeInsets(
-                                                top: Constants.doubleSpace,
-                                                leading: Constants.doubleSpace,
-                                                bottom: Constants.doubleSpace,
-                                                trailing: Constants.doubleSpace
-                                            ),
-                                            resizingMode: .stretch
-                                        )
-                                    )
-                                if !isUser {
-                                    Spacer()
-                                }
+                                MessageView(choice: choice)
                             }
                             .listRowSeparator(.hidden)
                         }
@@ -72,9 +39,9 @@ struct ChatView: View {
                     } else {
                         Spacer()
                     }
-                    TextField("Ask something", text: $text) {
-                        viewModel.chat(input: text)
-                        text = "" // TODO: textfield is not cleared :(
+                    TextField("Ask something", text: $text)
+                    .onSubmit {
+                        didEnterTextField()
                     }
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
@@ -84,6 +51,52 @@ struct ChatView: View {
         }
         .task {
             viewModel.getModels()
+        }
+    }
+    
+    private func didEnterTextField() {
+        viewModel.chat(input: text)
+        text = ""
+    }
+}
+
+struct MessageView: View {
+    let choice: Choice
+    
+    var body: some View {
+        let isUser = choice.message.role == "user"
+        if isUser {
+            Spacer()
+        }
+        Text(choice.message.content)
+            .id(choice.id)
+            .containerRelativeFrame(.horizontal) { length, _ in
+                length * 0.7
+            }
+            .padding()
+            .background(
+                isUser ?
+                Image("chat_bg_right").resizable(
+                    capInsets: EdgeInsets(
+                        top: Constants.doubleSpace,
+                        leading: Constants.doubleSpace,
+                        bottom: Constants.doubleSpace,
+                        trailing: Constants.doubleSpace
+                    ),
+                    resizingMode: .stretch
+                ) :
+                Image("chat_bg_left").resizable(
+                    capInsets: EdgeInsets(
+                        top: Constants.doubleSpace,
+                        leading: Constants.doubleSpace,
+                        bottom: Constants.doubleSpace,
+                        trailing: Constants.doubleSpace
+                    ),
+                    resizingMode: .stretch
+                )
+            )
+        if !isUser {
+            Spacer()
         }
     }
 }
