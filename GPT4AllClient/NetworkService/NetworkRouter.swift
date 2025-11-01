@@ -50,17 +50,18 @@ extension NetworkRouter {
         
         request.httpMethod = method.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-/*
-        let msg = """
-{
-        "model": "Llama 3 8B Instruct",
-        "messages": [{"role":"user","content":"Who is Lionel Messi?"}],
-        "max_tokens": 50,
-        "temperature": 0.28
-    }
-"""
- */
+
+        
+
         if let body {
+//            let msg = """
+//    {
+//            "model": "Llama 3 8B Instruct",
+//            "messages": [{"role":"user","content":"Who is Lionel Messi?"}],
+//            "max_tokens": 50,
+//            "temperature": 0.28
+//        }
+//    """
             request.httpBody = body.data(using: .utf8)
         }
         return request

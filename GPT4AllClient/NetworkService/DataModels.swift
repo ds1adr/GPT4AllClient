@@ -94,16 +94,12 @@ struct Message: Codable {
 
 struct Choice: Codable, Identifiable {
     // TODO: Need to check index can be identifiable
-    var id: Int {
-        index
-    }
+    var id: String = UUID().uuidString
     
-    let finishReason: String
     let index: Int
     let message: Message
     
     enum CodingKeys: String, CodingKey {
-        case finishReason = "finish_reason"
         case index
         case message
     }
@@ -114,7 +110,7 @@ struct ChatResponse: Codable {
     let created: Int
     let id: String
     let model: String
-    let objct: String
+    let object: String
 }
 
 /*

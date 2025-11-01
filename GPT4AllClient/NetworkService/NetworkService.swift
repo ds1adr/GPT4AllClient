@@ -34,7 +34,7 @@ class NetworkService {
             
             return .success(result)
         } catch {
-            return .failure(.invalidURL)
+            return .failure(.badResponse)
         }
     }
 }

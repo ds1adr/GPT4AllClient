@@ -26,4 +26,24 @@ class ChatViewModel {
             }
         }
     }
+    
+    func chat(input: String) {
+        guard let selectedModelId = selectedModel?.id else {
+            // TODO: display 'select model' alert
+            return
+        }
+        
+        let choice = Choice(index: choices.count, message: Message(role: "user", content: input))
+        choices.append(choice)
+        
+        let chatRequest = ChatRequest(model: selectedModelId, chatMessage: input)
+        Task {
+            do {
+                let recvChoices = try await networkManager.chat(request: chatRequest)
+                choices.append(contentsOf: recvChoices)
+            } catch {
+                
+            }
+        }
+    }
 }
