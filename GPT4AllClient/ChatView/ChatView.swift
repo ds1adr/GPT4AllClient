@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+enum Constants {
+    static let singleSpace: CGFloat = 8
+    static let doubleSpace: CGFloat = 16
+}
+
 struct ChatView: View {
     @State var viewModel: ChatViewModel
     @State private var text: String = ""
@@ -18,9 +23,45 @@ struct ChatView: View {
                 VStack {
                     if !viewModel.choices.isEmpty {
                         List(viewModel.choices) { choice in
-                            Text(choice.message.content)
-                                .id(choice.id)
+                            HStack {
+                                let isUser = choice.message.role == "user"
+                                if isUser {
+                                    Spacer()
+                                }
+                                Text(choice.message.content)
+                                    .id(choice.id)
+                                    .containerRelativeFrame(.horizontal) { length, _ in
+                                        length * 0.7
+                                    }
+                                    .padding()
+                                    .background(
+                                        isUser ?
+                                        Image("chat_bg_right").resizable(
+                                            capInsets: EdgeInsets(
+                                                top: Constants.doubleSpace,
+                                                leading: Constants.doubleSpace,
+                                                bottom: Constants.doubleSpace,
+                                                trailing: Constants.doubleSpace
+                                            ),
+                                            resizingMode: .stretch
+                                        ) :
+                                        Image("chat_bg_left").resizable(
+                                            capInsets: EdgeInsets(
+                                                top: Constants.doubleSpace,
+                                                leading: Constants.doubleSpace,
+                                                bottom: Constants.doubleSpace,
+                                                trailing: Constants.doubleSpace
+                                            ),
+                                            resizingMode: .stretch
+                                        )
+                                    )
+                                if !isUser {
+                                    Spacer()
+                                }
+                            }
+                            .listRowSeparator(.hidden)
                         }
+                        .listStyle(.plain)
                         .onChange(of: viewModel.choices.count) { _, _ in
                             if let lastID = viewModel.choices.last?.id {
                                 withAnimation {
