@@ -16,6 +16,7 @@ struct ChatView: View {
     @State var viewModel: ChatViewModel
     @State private var text: String = ""
     @State private var scrollToID: String? = nil
+    @State var isPresentModelSelection: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -46,7 +47,17 @@ struct ChatView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                 }
-                .navigationTitle(Text(viewModel.selectedModel?.id ?? ""))
+                .navigationTitle(Text(viewModel.selectedModel?.id ?? "GPT4All"))
+                .toolbar {
+                    Button {
+                        isPresentModelSelection.toggle()
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                    }
+                }
+                .sheet(isPresented: $isPresentModelSelection) {
+                    SettingsView(viewModel: viewModel)
+                }
             }
         }
         .task {

@@ -49,7 +49,7 @@ struct ModelResponse: Codable {
     }
 }
 
-struct Model: Codable {
+struct Model: Codable, Identifiable, Hashable {
     let id: String
     let object: String?
     let ownedBy: String?

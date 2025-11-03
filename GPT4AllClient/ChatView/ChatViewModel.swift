@@ -16,6 +16,10 @@ class ChatViewModel {
     var choices: [Choice] = []
     var selectedModel: Model? = nil
     
+//    func isSele(modelId: String) -> Bool {
+//        selectedModel?.id == modelId
+//    }
+    
     func getModels() {
         Task {
             do {
