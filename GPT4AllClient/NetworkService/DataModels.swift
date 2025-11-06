@@ -93,7 +93,6 @@ struct Message: Codable {
 }
 
 struct Choice: Codable, Identifiable {
-    // TODO: Need to check index can be identifiable
     var id: String = UUID().uuidString
     
     let index: Int

@@ -36,10 +36,14 @@ class ChatViewModel {
         let choice = Choice(index: choices.count, message: Message(role: "user", content: input))
         choices.append(choice)
         
+        let loading = Choice(index: choices.count, message: Message(role: Constants.loadingSymbol, content: "ellipsis"))
+        choices.append(loading)
+        
         let chatRequest = ChatRequest(model: selectedModelId, chatMessage: input)
         Task {
             do {
                 let recvChoices = try await networkManager.chat(request: chatRequest)
+                choices.removeLast()
                 choices.append(contentsOf: recvChoices)
             } catch {
                 

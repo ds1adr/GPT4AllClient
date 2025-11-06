@@ -10,6 +10,8 @@ import SwiftUI
 enum Constants {
     static let singleSpace: CGFloat = 8
     static let doubleSpace: CGFloat = 16
+    
+    static let loadingSymbol = "_loading_"
 }
 
 struct ChatView: View {
@@ -79,33 +81,50 @@ struct MessageView: View {
         if isUser {
             Spacer()
         }
-        Text(choice.message.content)
-            .id(choice.id)
-            .containerRelativeFrame(.horizontal) { length, _ in
-                length * 0.7
-            }
-            .padding()
-            .background(
-                isUser ?
-                Image("chat_bg_right").resizable(
-                    capInsets: EdgeInsets(
-                        top: Constants.doubleSpace,
-                        leading: Constants.doubleSpace,
-                        bottom: Constants.doubleSpace,
-                        trailing: Constants.doubleSpace
-                    ),
-                    resizingMode: .stretch
-                ) :
-                Image("chat_bg_left").resizable(
-                    capInsets: EdgeInsets(
-                        top: Constants.doubleSpace,
-                        leading: Constants.doubleSpace,
-                        bottom: Constants.doubleSpace,
-                        trailing: Constants.doubleSpace
-                    ),
-                    resizingMode: .stretch
+        if choice.message.role == Constants.loadingSymbol {
+            Image(systemName: choice.message.content)
+                .symbolEffect(.wiggle, isActive: true)
+                .padding()
+                .background(
+                    Image("chat_bg_left").resizable(
+                        capInsets: EdgeInsets(
+                            top: Constants.doubleSpace,
+                            leading: Constants.doubleSpace,
+                            bottom: Constants.doubleSpace,
+                            trailing: Constants.doubleSpace
+                        ),
+                        resizingMode: .stretch
+                    )
                 )
-            )
+        } else {
+            Text(choice.message.content)
+                .id(choice.id)
+                .containerRelativeFrame(.horizontal) { length, _ in
+                    length * 0.7
+                }
+                .padding()
+                .background(
+                    isUser ?
+                    Image("chat_bg_right").resizable(
+                        capInsets: EdgeInsets(
+                            top: Constants.doubleSpace,
+                            leading: Constants.doubleSpace,
+                            bottom: Constants.doubleSpace,
+                            trailing: Constants.doubleSpace
+                        ),
+                        resizingMode: .stretch
+                    ) :
+                        Image("chat_bg_left").resizable(
+                            capInsets: EdgeInsets(
+                                top: Constants.doubleSpace,
+                                leading: Constants.doubleSpace,
+                                bottom: Constants.doubleSpace,
+                                trailing: Constants.doubleSpace
+                            ),
+                            resizingMode: .stretch
+                        )
+                )
+        }
         if !isUser {
             Spacer()
         }
