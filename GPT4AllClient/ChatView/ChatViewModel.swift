@@ -43,7 +43,9 @@ class ChatViewModel {
         Task {
             do {
                 let recvChoices = try await networkManager.chat(request: chatRequest)
-                choices.removeLast()
+                choices.removeAll { choice in
+                    choice.id == loading.id
+                }
                 choices.append(contentsOf: recvChoices)
             } catch {
                 
